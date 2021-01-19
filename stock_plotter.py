@@ -31,7 +31,10 @@ def construct_nasdaq_url(ticker, start_date, end_date):
 """
 
 def retrieve_data(url):
-    response = urllib.request.urlopen(url)
+    req = urllib.request.Request(url)
+    req.add_header('User-Agent', 'My User Agent 1.0') 
+    req.add_header('From', 'youremail@domain.com') # TODO not sure if needed
+    response = urllib.request.urlopen(req)
     if response.length is not None and response.length <= 1:
         print("Couldn't retrieve dataset with that URL:", url)
         return None
