@@ -3,21 +3,18 @@ Retrieves an online dataset for a user-specified stock and timeframe, then
 plots that stock's closing price over that timeframe
 """
 
-import numpy as np
-
-import pandas as pd
-
-import matplotlib.pyplot as plt
-
-import seaborn as sns # wrapper for numpy
-import time
-
-import urllib
 import io
+import time
+import urllib
+import warnings
 from datetime import datetime, timedelta
 
-import warnings
-warnings.filterwarnings('ignore')
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns  # wrapper for numpy
+
+warnings.filterwarnings('ignore') # TODO remove?
 
 def construct_nasdaq_url(ticker, years_backward):
     today = datetime.date(datetime.now())
