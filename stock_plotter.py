@@ -100,3 +100,11 @@ chart = sns.lineplot(x=dataset.index / 365 + int(today.year - years_backward),
 fig.tight_layout()
 plt.ylabel('Stock Price($)')
 plt.legend([ticker])
+
+while (answer := input('Save figure to file? (Y/N):').upper()) not in ['Y', 'N']:
+    print('Please enter Y or N.')
+if answer == 'Y':
+    plt.savefig('plot.png', bbox_inches='tight')
+    
+plt.show()
+
