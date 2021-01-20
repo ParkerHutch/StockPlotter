@@ -101,10 +101,9 @@ fig.tight_layout()
 plt.ylabel('Stock Price($)')
 plt.legend([ticker])
 
+plt_fig = plt.gcf()
+plt.show()
 while (answer := input('Save figure to file? (Y/N):').upper()) not in ['Y', 'N']:
     print('Please enter Y or N.')
 if answer == 'Y':
-    plt.savefig('plot.png', bbox_inches='tight')
-    
-plt.show()
-
+    plt_fig.savefig('plot.png', bbox_inches='tight')
