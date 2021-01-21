@@ -1,31 +1,33 @@
 import pandas as pd
 
-def calculate_percent_increase(initial, final): # TODO lambda?
-    return 100.0 * (final - initial) / initial
-
-
-def process_data(raw_dataset): # param should be the output from retriever's request for data
+def clean_data(raw_dataset):
 
     dataset = raw_dataset.iloc[::-1] # Reverse dataset so oldest value is at top
     dataset.reset_index(drop=True, inplace=True)
-    
+
     # Remove whitespaces in front of column names
     dataset.rename(lambda a: a.strip(), axis='columns', inplace=True)
     
     clean_price = lambda a: float(a.strip().replace('$', ''))
     
-    # Cleaning Data: remove $ symbols
+    # Remove $ symbols
     for price_column in ['Close/Last', 'Open', 'High', 'Low']:
         dataset[price_column] = dataset[price_column].map(clean_price)
     
-    # Add daily % changes
-    dataset['Percent Change'] = calculate_percent_increase(
-        dataset['Close/Last'].shift(1), dataset['Close/Last'].shift(0))
-    #dataset['Percent Change'][0] = 0 # TODO should probably be N/A
-    
-    dataset.reset_index(drop=True)
-
     dataset['Date'] = pd.to_datetime(dataset['Date'])
+
+    return dataset
+
+
+def process_data(raw_dataset):
+
+    dataset = clean_data(raw_dataset)
+    
+    # Add daily % changes
+    percent_change = lambda initial, final : 100.0 * (final - initial) / initial
+
+    dataset['Percent Change'] = percent_change(
+        dataset['Close/Last'].shift(1), dataset['Close/Last'].shift(0))
     
     return dataset
 
