@@ -115,45 +115,52 @@ print(f'Low: ${min_price_row["Low"].item():.2f} ({min_price_row["Date"].item()})
 price_range = abs(max_price_row["High"].item() - min_price_row["Low"].item())
 print(f'Range: ${price_range:.2f}')
 
-dataset['Date'] = pd.to_datetime(dataset['Date']) # NOTE not tested for effects
+dataset['Date'] = pd.to_datetime(dataset['Date']) # NOTE not tested for effects, TODO move into get_dataset
 
 
-# TODO: put a point where the largest % change occurs
-# TODO: add title: $TICKER startDate - endDate
 """ Plotting with Seaborn"""
 sns.set() # Set Seaborn style
 fig, ax = plt.subplots(facecolor='lightblue')
 ax.margins(x=0)
-#plt.fill_between(dataset.index, dataset['Close/Last'])
 from matplotlib.dates import DateFormatter
-date_form = DateFormatter('%b-%y')# TODO change so that this displays the month as a word
+date_form = DateFormatter('%b-%y')#
 
 ax.xaxis.set_major_formatter(date_form)
 
-chart = sns.lineplot(x=dataset['Date'],
-                     y=dataset['Close/Last'], 
-                     label=ticker)
+chart = sns.lineplot(x=dataset['Date'], y=dataset['Close/Last'], label=ticker)
 fig.tight_layout()
 
 plt.ylabel('Stock Price ($)')
-plt.legend([ticker]) # TODO include axvline labels
-dataset['Date'] = pd.to_datetime(dataset['Date']) # TODO would this fix weird plotting year thing?
-dates = [date.strftime('%m/%d/%Y') for date in [dataset['Date'].min().date(), dataset['Date'].max().date()]]
-plt.title(f'{ticker} {dates[0]}-{dates[1]}')
+dataset['Date'] = pd.to_datetime(dataset['Date'])
+date_range = [
+    date.strftime('%B %Y') for date in [dataset['Date'].min().date(), 
+                                            dataset['Date'].max().date()]
+]
+plt.title(f'{ticker} {date_range[0]}-{date_range[1]}')
 
-max_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmax()]] 
+max_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmax()]]
 min_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmin()]] 
 
-plt.axvline(x=max_percent_change_row['Date'].item(), color='yellow', linewidth=1, linestyle='dashdot', label=f'{max_percent_change_row["Percent Change"].item():.2f}% Change') # TODO use label on legend
-plt.axvline(x=min_percent_change_row['Date'].item(), color='orange', linewidth=1, linestyle='dashdot', label=f'{min_percent_change_row["Percent Change"].item():.2f}% Change') 
+plt.axvline(x=max_percent_change_row['Date'].item(), color='yellow', 
+            linewidth=1, linestyle='dashdot', 
+            label=f'{max_percent_change_row["Percent Change"].item():.2f}\
+                % Change')
+plt.axvline(x=min_percent_change_row['Date'].item(), color='orange', 
+            linewidth=1, linestyle='dashdot', 
+            label=f'{min_percent_change_row["Percent Change"].item():.2f}\
+                % Change') 
 
-max_price_row = get_max_price_row(dataset)
-min_price_row = get_min_price_row(dataset)
+max_price_row = dataset.iloc[[dataset['High'].idxmax()]]
+min_price_row = dataset.iloc[[dataset['Low'].idxmin()]] 
 
-plt.axvline(x=max_price_row['Date'].item(), color='green', linewidth=1, linestyle='dashdot', label=f'High (${max_price_row["High"].item():.2f})') # TODO use label on legend
-plt.axvline(x=min_price_row['Date'].item(), color='red', linewidth=1, linestyle='dashdot', label=f'Low (${min_price_row["Low"].item():.2f})') 
+plt.axvline(x=max_price_row['Date'].item(), color='green', linewidth=1, 
+            linestyle='dashdot', 
+            label=f'High (${max_price_row["High"].item():.2f})')
+plt.axvline(x=min_price_row['Date'].item(), color='red', linewidth=1, 
+            linestyle='dashdot', 
+            label=f'Low (${min_price_row["Low"].item():.2f})') 
 
-plt.legend() # TODO Make sure this gets saved to the file
+plt.legend()
 
 plt_fig = plt.gcf()
 plt.show()
