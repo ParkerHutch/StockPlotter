@@ -107,66 +107,70 @@ while not is_valid_start_date(ticker, years_backward):
     ticker = input("That didn't work, please enter a new ticker:")
     years_backward = int(
         input("That didn't work, please enter another year amount:"))
-   
-dataset = get_dataset(ticker, years_backward)
 
-today = datetime.now()
+def main():
+    dataset = get_dataset(ticker, years_backward)
 
-output_stock_info(dataset)
+    today = datetime.now()
 
-""" Plotting with Seaborn"""
-sns.set() # Set Seaborn style
-fig, ax = plt.subplots(facecolor='lightblue')
-ax.margins(x=0)
-from matplotlib.dates import DateFormatter
-date_form = DateFormatter('%b-%y')
+    output_stock_info(dataset)
 
-ax.xaxis.set_major_formatter(date_form)
+    """ Plotting with Seaborn"""
+    sns.set() # Set Seaborn style
+    fig, ax = plt.subplots(facecolor='lightblue')
+    ax.margins(x=0)
+    from matplotlib.dates import DateFormatter
+    date_form = DateFormatter('%b-%y')
 
-chart = sns.lineplot(x=dataset['Date'], y=dataset['Close/Last'], label=ticker)
-fig.tight_layout()
+    ax.xaxis.set_major_formatter(date_form)
 
-plt.ylabel('Stock Price, USD ($)')
-dataset['Date'] = pd.to_datetime(dataset['Date'])
-date_range = [
-    date.strftime('%B %Y') for date in [dataset['Date'].min().date(), 
-                                            dataset['Date'].max().date()]]
-plt.title(f'{ticker} {date_range[0]} - {date_range[1]}')
+    chart = sns.lineplot(x=dataset['Date'], y=dataset['Close/Last'], label=ticker)
+    fig.tight_layout()
 
-max_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmax()]]
-min_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmin()]] 
+    plt.ylabel('Stock Price, USD ($)')
+    dataset['Date'] = pd.to_datetime(dataset['Date'])
+    date_range = [
+        date.strftime('%B %Y') for date in [dataset['Date'].min().date(), 
+                                                dataset['Date'].max().date()]]
+    plt.title(f'{ticker} {date_range[0]} - {date_range[1]}')
 
-plt.axvline(x=max_percent_change_row['Date'].item(), color='yellow', 
-            linewidth=1, linestyle='dashdot', 
-            label=f'{max_percent_change_row["Percent Change"].item():.2f}\
-                % Change')
-plt.axvline(x=min_percent_change_row['Date'].item(), color='orange', 
-            linewidth=1, linestyle='dashdot', 
-            label=f'{min_percent_change_row["Percent Change"].item():.2f}\
-                % Change') 
+    max_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmax()]]
+    min_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmin()]] 
 
-max_price_row = dataset.iloc[[dataset['High'].idxmax()]]
-min_price_row = dataset.iloc[[dataset['Low'].idxmin()]] 
+    plt.axvline(x=max_percent_change_row['Date'].item(), color='yellow', 
+                linewidth=1, linestyle='dashdot', 
+                label=f'{max_percent_change_row["Percent Change"].item():.2f}\
+                    % Change')
+    plt.axvline(x=min_percent_change_row['Date'].item(), color='orange', 
+                linewidth=1, linestyle='dashdot', 
+                label=f'{min_percent_change_row["Percent Change"].item():.2f}\
+                    % Change') 
 
-plt.axvline(x=max_price_row['Date'].item(), color='green', linewidth=1, 
-            linestyle='dashdot', 
-            label=f'High (${max_price_row["High"].item():.2f})')
-plt.axvline(x=min_price_row['Date'].item(), color='red', linewidth=1, 
-            linestyle='dashdot', 
-            label=f'Low (${min_price_row["Low"].item():.2f})') 
+    max_price_row = dataset.iloc[[dataset['High'].idxmax()]]
+    min_price_row = dataset.iloc[[dataset['Low'].idxmin()]] 
 
-plt.legend()
+    plt.axvline(x=max_price_row['Date'].item(), color='green', linewidth=1, 
+                linestyle='dashdot', 
+                label=f'High (${max_price_row["High"].item():.2f})')
+    plt.axvline(x=min_price_row['Date'].item(), color='red', linewidth=1, 
+                linestyle='dashdot', 
+                label=f'Low (${min_price_row["Low"].item():.2f})') 
 
-plt_fig = plt.gcf()
-plt.show()
-while (answer := input('Save figure to file? (Y/N): ').upper()) not in ['Y', 'N']:
-    print('Please enter Y or N.')
-if answer == 'Y':
-    plt_fig.savefig('plot.png', bbox_inches='tight')
+    plt.legend()
 
-while (answer := input('Save dataset to file? (Y/N): ').upper()) not in ['Y', 'N']:
-    print('Please enter Y or N.')
-if answer == 'Y':
-    print('here')
-    print(dataset)
-    dataset.to_csv(path_or_buf='./data.csv', index=False)
+    plt_fig = plt.gcf()
+    plt.show()
+    while (answer := input('Save figure to file? (Y/N): ').upper()) not in ['Y', 'N']:
+        print('Please enter Y or N.')
+    if answer == 'Y':
+        plt_fig.savefig('plot.png', bbox_inches='tight')
+
+    while (answer := input('Save dataset to file? (Y/N): ').upper()) not in ['Y', 'N']:
+        print('Please enter Y or N.')
+    if answer == 'Y':
+        print('here')
+        print(dataset)
+        dataset.to_csv(path_or_buf='./data.csv', index=False)
+
+if __name__ == '__main__':
+    main()
