@@ -1,7 +1,5 @@
 from typing import Tuple
-import analyzer
-import retriever
-import plotter
+from helpers import analyzer, retriever, plotter
 
 def get_user_input() -> Tuple[str, float]:
     """Ask the user for a ticker and the number of years backward to go, then
