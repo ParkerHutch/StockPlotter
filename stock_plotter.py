@@ -75,7 +75,7 @@ def get_dataset(ticker, years_backward):
     # Add year column
     dataset.reset_index(drop=True)
 
-    dataset['Year'] = dataset['Date'].str.split('/', expand=True)[2]
+    dataset['Date'] = pd.to_datetime(dataset['Date'])
     
     return dataset
 
@@ -124,8 +124,6 @@ dataset = get_dataset(ticker, years_backward)
 
 today = datetime.now()
 
-dataset['Date'] = pd.to_datetime(dataset['Date']) # NOTE not tested for effects, TODO move into get_dataset
-
 output_stock_info(dataset)
 
 """ Plotting with Seaborn"""
@@ -145,7 +143,7 @@ dataset['Date'] = pd.to_datetime(dataset['Date'])
 date_range = [
     date.strftime('%B %Y') for date in [dataset['Date'].min().date(), 
                                             dataset['Date'].max().date()]]
-plt.title(f'{ticker} {date_range[0]}-{date_range[1]}')
+plt.title(f'{ticker} {date_range[0]} - {date_range[1]}')
 
 max_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmax()]]
 min_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmin()]] 
