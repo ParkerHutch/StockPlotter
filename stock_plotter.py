@@ -79,6 +79,19 @@ def get_dataset(ticker, years_backward):
     
     return dataset
 
+def get_largest_percent_change_rows(dataset):
+    max_percent_change_index = dataset['Percent Change'].idxmax()
+    min_percent_change_index = dataset['Percent Change'].idxmin()
+    max_percent_change_row = dataset.iloc[[max_percent_change_index]]
+    min_percent_change_row = dataset.iloc[[min_percent_change_index]]
+    return max_percent_change_row, min_percent_change_row
+
+def get_max_price_row(dataset):
+    return dataset.iloc[[dataset['High'].idxmax()]]
+
+def get_min_price_row(dataset):
+    return dataset.iloc[[dataset['Low'].idxmin()]]
+
 """ Get user input """
 ticker = input('Ticker:')
 years_backward = int(input("Years back: "))
