@@ -28,9 +28,9 @@ def main():
 
     plt_fig = plotter.plot_data(dataset, ticker)
 
-    plt_fig.savefig('plot.png', bbox_inches='tight')
+    plt_fig.savefig('./output/plot.png', bbox_inches='tight')
 
-    dataset.to_csv(path_or_buf='./data.csv', index=False)
+    dataset.to_csv(path_or_buf='./output/data.csv', index=False)
 
 
 if __name__ == '__main__':
