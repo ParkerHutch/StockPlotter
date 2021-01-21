@@ -70,7 +70,7 @@ def get_dataset(ticker, years_backward):
     
     dataset['Percent Change'] = calculate_percent_increase(
         dataset['Close/Last'].shift(1), dataset['Close/Last'].shift(0))
-    dataset['Percent Change'][0] = 0 
+    dataset['Percent Change'][0] = 0 # TODO should probably be N/A
     
     # Add year column
     dataset.reset_index(drop=True)
@@ -94,8 +94,8 @@ def get_min_price_row(dataset):
 
 """ Get user input """
 ticker = input('Ticker:')
-years_backward = int(input("Years back: "))
-while not is_valid_start_date(ticker, years_backward):
+years_backward = int(input("Years back: ")) # TODO accept float input
+while not is_valid_start_date(ticker, years_backward): # TODO use datetime module to get day a year ago
     ticker = input("That didn't work, please enter a new ticker:")
     years_backward = int(input("That didn't work, please enter another year amount:"))
    
@@ -103,6 +103,20 @@ dataset = get_dataset(ticker, years_backward)
 
 today = datetime.now()
 
+""" Output stock info to console """ # TODO add formatting
+print(f'Some useful information for {ticker} over the last {years_backward} years:')
+max_percent_change_row, min_percent_change_row = get_largest_percent_change_rows(dataset)
+print(f'Max % Change: {max_percent_change_row["Percent Change"].item():.2f}% ({max_percent_change_row["Date"].item()})')
+print(f'Min % Change: {min_percent_change_row["Percent Change"].item():.2f}% ({min_percent_change_row["Date"].item()})')
+max_price_row = get_max_price_row(dataset)
+print(f'High: ${max_price_row["High"].item():.2f} ({max_price_row["Date"].item()})')
+min_price_row = get_min_price_row(dataset)
+print(f'Low: ${min_price_row["Low"].item():.2f} ({min_price_row["Date"].item()})')
+price_range = abs(max_price_row["High"].item() - min_price_row["Low"].item())
+print(f'Range: ${price_range:.2f}')
+
+# TODO: put a point where the largest % change occurs
+# TODO: add title: $TICKER startDate - endDate
 """ Plotting with Seaborn"""
 sns.set() # Set Seaborn style
 fig, ax = plt.subplots(facecolor='lightblue')
@@ -120,3 +134,10 @@ while (answer := input('Save figure to file? (Y/N):').upper()) not in ['Y', 'N']
     print('Please enter Y or N.')
 if answer == 'Y':
     plt_fig.savefig('plot.png', bbox_inches='tight')
+
+while (answer := input('Save dataset to file? (Y/N):').upper()) not in ['Y', 'N']:
+    print('Please enter Y or N.')
+if answer == 'Y':
+    print('here')
+    print(dataset)
+    dataset.to_csv(path_or_buf='./data.csv', index=False)
