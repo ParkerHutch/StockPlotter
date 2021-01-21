@@ -126,7 +126,7 @@ fig, ax = plt.subplots(facecolor='lightblue')
 ax.margins(x=0)
 #plt.fill_between(dataset.index, dataset['Close/Last'])
 from matplotlib.dates import DateFormatter
-date_form = DateFormatter('%m-%y')
+date_form = DateFormatter('%b-%y')# TODO change so that this displays the month as a word
 
 ax.xaxis.set_major_formatter(date_form)
 
@@ -135,11 +135,11 @@ chart = sns.lineplot(x=dataset['Date'],
                      label=ticker)
 fig.tight_layout()
 
-plt.ylabel('Stock Price($)')
+plt.ylabel('Stock Price ($)')
 plt.legend([ticker]) # TODO include axvline labels
 dataset['Date'] = pd.to_datetime(dataset['Date']) # TODO would this fix weird plotting year thing?
 dates = [date.strftime('%m/%d/%Y') for date in [dataset['Date'].min().date(), dataset['Date'].max().date()]]
-plt.title(f'${ticker} {dates[0]}-{dates[1]}')
+plt.title(f'{ticker} {dates[0]}-{dates[1]}')
 
 max_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmax()]] 
 min_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmin()]] 
