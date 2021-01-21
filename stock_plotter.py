@@ -133,7 +133,7 @@ sns.set() # Set Seaborn style
 fig, ax = plt.subplots(facecolor='lightblue')
 ax.margins(x=0)
 from matplotlib.dates import DateFormatter
-date_form = DateFormatter('%b-%y')#
+date_form = DateFormatter('%b-%y')
 
 ax.xaxis.set_major_formatter(date_form)
 
@@ -144,8 +144,7 @@ plt.ylabel('Stock Price ($)')
 dataset['Date'] = pd.to_datetime(dataset['Date'])
 date_range = [
     date.strftime('%B %Y') for date in [dataset['Date'].min().date(), 
-                                            dataset['Date'].max().date()]
-]
+                                            dataset['Date'].max().date()]]
 plt.title(f'{ticker} {date_range[0]}-{date_range[1]}')
 
 max_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmax()]]
