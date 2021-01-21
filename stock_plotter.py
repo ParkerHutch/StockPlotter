@@ -131,14 +131,29 @@ date_form = DateFormatter('%m-%y')
 ax.xaxis.set_major_formatter(date_form)
 
 chart = sns.lineplot(x=dataset['Date'],
-                     y=dataset['Close/Last'], legend='full')
+                     y=dataset['Close/Last'], 
+                     label=ticker)
 fig.tight_layout()
 
 plt.ylabel('Stock Price($)')
-plt.legend([ticker])
+plt.legend([ticker]) # TODO include axvline labels
 dataset['Date'] = pd.to_datetime(dataset['Date']) # TODO would this fix weird plotting year thing?
 dates = [date.strftime('%m/%d/%Y') for date in [dataset['Date'].min().date(), dataset['Date'].max().date()]]
 plt.title(f'${ticker} {dates[0]}-{dates[1]}')
+
+max_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmax()]] 
+min_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmin()]] 
+
+plt.axvline(x=max_percent_change_row['Date'].item(), color='yellow', linewidth=1, linestyle='dashdot', label='Maximum % Change') # TODO use label on legend
+plt.axvline(x=min_percent_change_row['Date'].item(), color='orange', linewidth=1, linestyle='dashdot', label='Minimum % Change') 
+
+max_price_row = get_max_price_row(dataset)
+min_price_row = get_min_price_row(dataset)
+
+plt.axvline(x=max_price_row['Date'].item(), color='green', linewidth=1, linestyle='dashdot', label='High') # TODO use label on legend
+plt.axvline(x=min_price_row['Date'].item(), color='red', linewidth=1, linestyle='dashdot', label='Low') 
+
+plt.legend()
 
 plt_fig = plt.gcf()
 plt.show()
