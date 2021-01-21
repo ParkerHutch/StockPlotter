@@ -30,7 +30,7 @@ def main():
     
     analyzer.process_data(dataset)
 
-    analyzer.output_stock_info(ticker, years_backward, dataset)
+    analyzer.output_stock_info(ticker, dataset)
 
     plt_fig = plotter.plot_data(dataset, ticker)
 

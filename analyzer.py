@@ -46,8 +46,7 @@ def clean_data(dataset: pd.DataFrame) -> pd.DataFrame:
     dataset.sort_values(by='Date', ascending=True, inplace=True)
 
 
-def output_stock_info(ticker: str, years_backward: float, 
-                        dataset: pd.DataFrame):
+def output_stock_info(ticker: str, dataset: pd.DataFrame):
     """Output useful information about the stock over the given time period to
     the console.
 
@@ -57,8 +56,8 @@ def output_stock_info(ticker: str, years_backward: float,
         dataset (pd.DataFrame): the pandas DataFrame containing stock info
     """
 
-    print(f'Some useful information for {ticker} over the last',
-        f'{years_backward} years:')
+    print(f'{ticker} since {dataset["Date"].min().strftime("%b %Y")}:')
+    
     max_percent_change_row = dataset.iloc[[dataset['Percent Change'].argmax()]]
     min_percent_change_row = dataset.iloc[[dataset['Percent Change'].argmin()]]     
     print(f'Max % Change: {max_percent_change_row["Percent Change"].item():.2f}%', 
