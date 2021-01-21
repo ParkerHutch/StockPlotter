@@ -93,7 +93,7 @@ def get_min_price_row(dataset):
     return dataset.iloc[[dataset['Low'].idxmin()]]
 
 """ Get user input """
-ticker = input('Ticker:')
+ticker = input('Ticker: ')
 years_backward = int(input("Years back: ")) # TODO accept float input
 while not is_valid_start_date(ticker, years_backward): # TODO use datetime module to get day a year ago
     ticker = input("That didn't work, please enter a new ticker:")
@@ -129,7 +129,7 @@ fig.tight_layout()
 plt.ylabel('Stock Price($)')
 plt.legend([ticker])
 dataset['Date'] = pd.to_datetime(dataset['Date']) # TODO would this fix weird plotting year thing?
-dates = [x.strftime('%m/%d/%Y') for x in [dataset['Date'].min().date(), dataset['Date'].max().date()]]
+dates = [date.strftime('%m/%d/%Y') for date in [dataset['Date'].min().date(), dataset['Date'].max().date()]]
 plt.title(f'${ticker} {dates[0]}-{dates[1]}')
 
 plt_fig = plt.gcf()
