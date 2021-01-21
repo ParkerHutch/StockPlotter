@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns  # wrapper for numpy
 
-warnings.filterwarnings('ignore') # TODO remove?
+warnings.filterwarnings('ignore') # ignore SettingWithCopyWarning
 
 def construct_nasdaq_url(ticker, years_backward):
     today = datetime.date(datetime.now())
@@ -79,18 +79,6 @@ def get_dataset(ticker, years_backward):
     
     return dataset
 
-def get_largest_percent_change_rows(dataset):
-    max_percent_change_index = dataset['Percent Change'].idxmax()
-    min_percent_change_index = dataset['Percent Change'].idxmin()
-    max_percent_change_row = dataset.iloc[[max_percent_change_index]]
-    min_percent_change_row = dataset.iloc[[min_percent_change_index]]
-    return max_percent_change_row, min_percent_change_row
-
-def get_max_price_row(dataset):
-    return dataset.iloc[[dataset['High'].idxmax()]]
-
-def get_min_price_row(dataset):
-    return dataset.iloc[[dataset['Low'].idxmin()]]
 
 def output_stock_info(dataset):
     """ Output stock info to console """ # TODO add formatting
@@ -102,10 +90,10 @@ def output_stock_info(dataset):
         f'({max_percent_change_row["Date"].item().date().strftime("%m/%d/%Y")})')
     print(f'Min % Change: {min_percent_change_row["Percent Change"].item():.2f}%',
         f'({min_percent_change_row["Date"].item().date().strftime("%m/%d/%Y")})')
-    max_price_row = get_max_price_row(dataset)
+    max_price_row = dataset.iloc[[dataset['High'].idxmax()]]
     print(f'High: ${max_price_row["High"].item():.2f}',
         f'({max_price_row["Date"].item().date().strftime("%m/%d/%Y")})')
-    min_price_row = get_min_price_row(dataset)
+    min_price_row = dataset.iloc[[dataset['Low'].idxmin()]]
     print(f'Low: ${min_price_row["Low"].item():.2f}',
         f'({min_price_row["Date"].item().date().strftime("%m/%d/%Y")})')
     price_range = abs(max_price_row["High"].item() - 
