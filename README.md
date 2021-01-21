@@ -10,8 +10,10 @@ pip install -r requirements.txt
 python3 main.py
 ```
 
-
 ## Requirements
 - Python requirements are listed in [requirements.txt](./requirements.txt)
 - This program gets its data for a stock from the [NASDAQ site](https://www.nasdaq.com/market-activity). Changes in the API may affect the functionality of this program. An internet connection is required.
+
 ## Demo
+![](second-gif.gif)
+![](plot.png)
