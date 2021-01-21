@@ -8,15 +8,15 @@ import analyzer
 import retriever
 import plotter
 
-def get_user_input() -> Tuple[str, int]:
+def get_user_input() -> Tuple[str, float]:
     """Ask the user for a ticker and the number of years backward to go, then
     return the user's answers.
 
     Returns:
-        Tuple[str, int]: the ticker and number of years backward to go
+        Tuple[str, float]: the ticker and number of years backward to go
     """
     ticker = input('Ticker: ').upper()
-    years_backward = int(input("Years back: ")) # TODO accept float input
+    years_backward = float(input("Years back: ")) # TODO accept float input
 
     return ticker, years_backward
 

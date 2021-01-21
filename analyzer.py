@@ -46,13 +46,15 @@ def clean_data(dataset: pd.DataFrame) -> pd.DataFrame:
     dataset.sort_values(by='Date', ascending=True, inplace=True)
 
 
-def output_stock_info(ticker: str, years_backward: int, dataset: pd.DataFrame):
+def output_stock_info(ticker: str, years_backward: float, 
+                        dataset: pd.DataFrame):
     """Output useful information about the stock over the given time period to
     the console.
 
-    Args: ticker (str): the stock ticker on the NASDAQ years_backward (int): the
-        number of years analysis was conducted for dataset (pd.DataFrame): the
-        pandas DataFrame containing stock info
+    Args:
+        ticker (str): the stock ticker on the NASDAQ
+        years_backward (float): the number of years analysis was conducted for
+        dataset (pd.DataFrame): the pandas DataFrame containing stock info
     """
 
     print(f'Some useful information for {ticker} over the last',

@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 import pandas as pd  # used to read response as csv
 
-def get_data(ticker:str, years_backward:int) -> pd.DataFrame:
+def get_data(ticker:str, years_backward:float) -> pd.DataFrame:
     """Attempt to return NASDAQ data as a pandas DataFrame object for the given
     stock ticker, going back the given number of years. If the ticker or
     timeframe is invalid, None will be returned. 
@@ -22,7 +22,7 @@ def get_data(ticker:str, years_backward:int) -> pd.DataFrame:
     return data
 
 
-def get_nasdaq_endpoint(ticker: str, years_backward: int) -> str:
+def get_nasdaq_endpoint(ticker: str, years_backward: float) -> str:
     """Construct a NASDAQ API url that pertains to the given stock ticker, going
     back the given number of years.
 
