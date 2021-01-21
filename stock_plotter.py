@@ -72,7 +72,7 @@ def get_dataset(ticker, years_backward):
     return dataset
 
 
-def output_stock_info(dataset):
+def output_stock_info(ticker, years_backward, dataset):
     """ Output stock info to console """ # TODO add formatting
     print(f'Some useful information for {ticker} over the last',
         f'{years_backward} years:')
@@ -92,20 +92,26 @@ def output_stock_info(dataset):
                         min_price_row["Low"].item())
     print(f'Range: ${price_range:.2f}')
 
-""" Get user input """
-ticker = input('Ticker: ')
-years_backward = int(input("Years back: ")) # TODO accept float input
-while not is_valid_start_date(ticker, years_backward):
-    ticker = input("That didn't work, please enter a new ticker:")
-    years_backward = int(
-        input("That didn't work, please enter another year amount:"))
+def get_user_input():
+    """ Get user input """
+    ticker = input('Ticker: ')
+    years_backward = int(input("Years back: ")) # TODO accept float input
+    while not is_valid_start_date(ticker, years_backward):
+        ticker = input("That didn't work, please enter a new ticker:")
+        years_backward = int(
+            input("That didn't work, please enter another year amount:"))
+
+    return ticker, years_backward
+
 
 def main():
+    ticker, years_backward = get_user_input()
+
     dataset = get_dataset(ticker, years_backward)
 
     today = datetime.now()
 
-    output_stock_info(dataset)
+    output_stock_info(ticker, years_backward, dataset)
 
     """ Plotting with Seaborn"""
     sns.set() # Set Seaborn style
