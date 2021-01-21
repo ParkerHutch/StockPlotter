@@ -1,4 +1,4 @@
-# StockPlotter
+# stock-plotter
 Plots a stock's movement over a user-inputted timeframe, along with lines to signify important moments.
 
 ## General
