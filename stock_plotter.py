@@ -20,17 +20,11 @@ def construct_nasdaq_url(ticker, years_backward):
     today = datetime.date(datetime.now())
     
     start_date = today - timedelta(days = years_backward * 365) 
-    return 'https://www.nasdaq.com/api/v1/historical/{}/stocks/{}/{}'.format(ticker, start_date, today)
-
-"""
-def construct_nasdaq_url(ticker, start_date, end_date):
-    return 'https://www.nasdaq.com/api/v1/historical/{}/stocks/{}/{}'.format(ticker, start_date, end_date)
-"""
+    return f'https://www.nasdaq.com/api/v1/historical/{ticker}/stocks/{start_date}/{today}'
 
 def retrieve_data(url):
     req = urllib.request.Request(url)
     req.add_header('User-Agent', 'My User Agent 1.0') 
-    req.add_header('From', 'youremail@domain.com') # TODO not sure if needed
     response = urllib.request.urlopen(req)
     if response.length is not None and response.length <= 1:
         print("Couldn't retrieve dataset with that URL:", url)
@@ -67,12 +61,10 @@ def get_dataset(ticker, years_backward):
         dataset[price_column] = dataset[price_column].map(clean_price)
     
     # Add daily % changes
-    
     dataset['Percent Change'] = calculate_percent_increase(
         dataset['Close/Last'].shift(1), dataset['Close/Last'].shift(0))
     dataset['Percent Change'][0] = 0 # TODO should probably be N/A
     
-    # Add year column
     dataset.reset_index(drop=True)
 
     dataset['Date'] = pd.to_datetime(dataset['Date'])
@@ -139,12 +131,10 @@ def main():
 
     plt.axvline(x=max_percent_change_row['Date'].item(), color='yellow', 
                 linewidth=1, linestyle='dashdot', 
-                label=f'{max_percent_change_row["Percent Change"].item():.2f}\
-                    % Change')
+                label=f'{max_percent_change_row["Percent Change"].item():.2f}% Change')
     plt.axvline(x=min_percent_change_row['Date'].item(), color='orange', 
                 linewidth=1, linestyle='dashdot', 
-                label=f'{min_percent_change_row["Percent Change"].item():.2f}\
-                    % Change') 
+                label=f'{min_percent_change_row["Percent Change"].item():.2f}% Change') 
 
     max_price_row = dataset.iloc[[dataset['High'].idxmax()]]
     min_price_row = dataset.iloc[[dataset['Low'].idxmin()]] 
