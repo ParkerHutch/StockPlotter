@@ -144,16 +144,16 @@ plt.title(f'${ticker} {dates[0]}-{dates[1]}')
 max_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmax()]] 
 min_percent_change_row = dataset.iloc[[dataset['Percent Change'].idxmin()]] 
 
-plt.axvline(x=max_percent_change_row['Date'].item(), color='yellow', linewidth=1, linestyle='dashdot', label='Maximum % Change') # TODO use label on legend
-plt.axvline(x=min_percent_change_row['Date'].item(), color='orange', linewidth=1, linestyle='dashdot', label='Minimum % Change') 
+plt.axvline(x=max_percent_change_row['Date'].item(), color='yellow', linewidth=1, linestyle='dashdot', label=f'{max_percent_change_row["Percent Change"].item():.2f}% Change') # TODO use label on legend
+plt.axvline(x=min_percent_change_row['Date'].item(), color='orange', linewidth=1, linestyle='dashdot', label=f'{min_percent_change_row["Percent Change"].item():.2f}% Change') 
 
 max_price_row = get_max_price_row(dataset)
 min_price_row = get_min_price_row(dataset)
 
-plt.axvline(x=max_price_row['Date'].item(), color='green', linewidth=1, linestyle='dashdot', label='High') # TODO use label on legend
-plt.axvline(x=min_price_row['Date'].item(), color='red', linewidth=1, linestyle='dashdot', label='Low') 
+plt.axvline(x=max_price_row['Date'].item(), color='green', linewidth=1, linestyle='dashdot', label=f'High (${max_price_row["High"].item():.2f})') # TODO use label on legend
+plt.axvline(x=min_price_row['Date'].item(), color='red', linewidth=1, linestyle='dashdot', label=f'Low (${min_price_row["Low"].item():.2f})') 
 
-plt.legend()
+plt.legend() # TODO Make sure this gets saved to the file
 
 plt_fig = plt.gcf()
 plt.show()
