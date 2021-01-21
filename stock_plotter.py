@@ -138,7 +138,7 @@ ax.xaxis.set_major_formatter(date_form)
 chart = sns.lineplot(x=dataset['Date'], y=dataset['Close/Last'], label=ticker)
 fig.tight_layout()
 
-plt.ylabel('Stock Price ($)')
+plt.ylabel('Stock Price, USD ($)')
 dataset['Date'] = pd.to_datetime(dataset['Date'])
 date_range = [
     date.strftime('%B %Y') for date in [dataset['Date'].min().date(), 
