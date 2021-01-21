@@ -115,6 +115,9 @@ print(f'Low: ${min_price_row["Low"].item():.2f} ({min_price_row["Date"].item()})
 price_range = abs(max_price_row["High"].item() - min_price_row["Low"].item())
 print(f'Range: ${price_range:.2f}')
 
+dataset['Date'] = pd.to_datetime(dataset['Date']) # NOTE not tested for effects
+
+
 # TODO: put a point where the largest % change occurs
 # TODO: add title: $TICKER startDate - endDate
 """ Plotting with Seaborn"""
@@ -122,7 +125,12 @@ sns.set() # Set Seaborn style
 fig, ax = plt.subplots(facecolor='lightblue')
 ax.margins(x=0)
 #plt.fill_between(dataset.index, dataset['Close/Last'])
-chart = sns.lineplot(x=dataset.index / 365 + int(today.year - years_backward),
+from matplotlib.dates import DateFormatter
+date_form = DateFormatter('%m-%y')
+
+ax.xaxis.set_major_formatter(date_form)
+
+chart = sns.lineplot(x=dataset['Date'],
                      y=dataset['Close/Last'], legend='full')
 fig.tight_layout()
 
