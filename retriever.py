@@ -2,7 +2,7 @@ import io
 import urllib
 from datetime import datetime, timedelta
 
-import pandas as pd  # used to read response as csv
+import pandas as pd
 
 def get_data(ticker:str, years_backward:float) -> pd.DataFrame:
     """Attempt to return NASDAQ data as a pandas DataFrame object for the given
@@ -17,6 +17,7 @@ def get_data(ticker:str, years_backward:float) -> pd.DataFrame:
         pandas.DataFrame: a DataFrame of the NASDAQ data for the given stock
         ticker over the last years_backward_years, or None if no data was found
     """
+    
     url = get_nasdaq_endpoint(ticker, years_backward)
     data = request_data(url)
     return data
@@ -34,6 +35,7 @@ def get_nasdaq_endpoint(ticker: str, years_backward: float) -> str:
         str: the NASDAQ API url, which, if valid, should return a dataset file 
         as a CSV when accessed with a GET request
     """
+
     today = datetime.date(datetime.now())
     
     start_date = today - timedelta(days = years_backward * 365) 
@@ -52,6 +54,7 @@ def request_data(url:str) -> pd.DataFrame:
         pandas.DataFrame: a DataFrame of the url's CSV file response if it was
         given, None otherwise
     """
+
     req = urllib.request.Request(url)
     req.add_header('User-Agent', 'My User Agent 1.0') 
     response = urllib.request.urlopen(req)

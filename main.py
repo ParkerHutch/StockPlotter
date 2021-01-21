@@ -1,8 +1,3 @@
-"""
-Retrieves an online dataset for a user-specified stock and timeframe, then
-plots that stock's closing price over that timeframe
-"""
-
 from typing import Tuple
 import analyzer
 import retriever
@@ -15,6 +10,7 @@ def get_user_input() -> Tuple[str, float]:
     Returns:
         Tuple[str, float]: the ticker and number of years backward to go
     """
+
     ticker = input('Ticker: ').upper()
     years_backward = float(input("Years back: ")) # TODO accept float input
 
