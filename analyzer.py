@@ -20,7 +20,6 @@ def process_data(dataset: pd.DataFrame) -> pd.DataFrame:
     dataset['Percent Change'] = percent_change(
         dataset['Close/Last'].shift(1), dataset['Close/Last'].shift(0))
     
-    return dataset
 
 def clean_data(dataset: pd.DataFrame) -> pd.DataFrame:
     """Prepares the dataset in-place for processing. This step includes sorting

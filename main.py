@@ -3,11 +3,12 @@ Retrieves an online dataset for a user-specified stock and timeframe, then
 plots that stock's closing price over that timeframe
 """
 
+from typing import Tuple
 import analyzer
 import retriever
 import plotter
 
-def get_user_input():
+def get_user_input() -> Tuple[str, int]:
     """Ask the user for a ticker and the number of years backward to go, then
     return the user's answers.
 
@@ -23,11 +24,11 @@ def get_user_input():
 def main():
     
     ticker, years_backward = get_user_input()
-    while (raw_data := retriever.get_data(ticker, years_backward)) is None:
+    while (dataset := retriever.get_data(ticker, years_backward)) is None:
         print("That ticker/time combo didn't work, please enter a new one.")
         ticker, years_backward = get_user_input()
     
-    dataset = analyzer.process_data(raw_data)
+    analyzer.process_data(dataset)
 
     analyzer.output_stock_info(ticker, years_backward, dataset)
 

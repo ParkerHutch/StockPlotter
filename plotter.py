@@ -12,6 +12,7 @@ def plot_data(dataset, ticker: str):
     Returns:
         matplotlib.Figure: the plot as a matplotlib Figure
     """
+    
     sns.set() # Set Seaborn style
     fig, ax = plt.subplots(facecolor='lightblue')
     ax.margins(x=0)
@@ -19,7 +20,7 @@ def plot_data(dataset, ticker: str):
 
     ax.xaxis.set_major_formatter(date_form)
 
-    chart = sns.lineplot(x=dataset['Date'], y=dataset['Close/Last'], label=ticker)
+    sns.lineplot(x=dataset['Date'], y=dataset['Close/Last'], label=ticker)
     fig.tight_layout()
 
     plt.ylabel('Stock Price, USD ($)')
