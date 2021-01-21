@@ -26,11 +26,3 @@ def request_data(url):
     else:
         data = response.read().decode('utf-8')
         return pd.read_csv(io.StringIO(data))
-
-
-def url_has_data(url):
-    data = request_data(url)
-    if data is not None:
-        return True
-    else:
-        return False
