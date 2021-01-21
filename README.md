@@ -15,5 +15,5 @@ python3 main.py
 - This program gets its data for a stock from the [NASDAQ site](https://www.nasdaq.com/market-activity). Changes in the API may affect the functionality of this program. An internet connection is required.
 
 ## Demo
-![](second-gif.gif)
-![](plot.png)
+![](./img/gif-demo.gif)
+![](./img/plot.png)
